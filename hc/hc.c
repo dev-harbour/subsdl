@@ -379,11 +379,13 @@ static void hc_drawComdLine( GT *gt, HC *hc )
 
    char *combinedDir = gt_addStr( currentDir, promptEnd, NULL );
    char *cmdLinePart = gt_subStr( hc->cmdLine, 1 + hc->cmdColNo, maxCol + hc->cmdColNo );
-   char *paddedCmdLine = gt_padR( gt_addStr( combinedDir, cmdLinePart, NULL ), maxCol );
+   char *combinedCmdLine = gt_addStr( combinedDir, cmdLinePart, NULL );
+   char *paddedCmdLine = gt_padR( combinedCmdLine, maxCol );
 
    gt_drawFont( gt, 0, maxRow - 1, paddedCmdLine, "323232/00FF00" );
 
    free( combinedDir );
    free( cmdLinePart );
+   free( combinedCmdLine );
    free( paddedCmdLine );
 }
