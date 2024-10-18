@@ -1,0 +1,6 @@
+# Subsystem SDL2
+*.bak
+*.exe
+build
+lib
+tmp
