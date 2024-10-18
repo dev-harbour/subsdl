@@ -10,7 +10,7 @@ int main()
    int key;
    GT *gt = gt_createWindow( 830, 450, "Test Unicode", "FFFFFF" );
 
-   gt_loadFont( gt, "../docs/assets/font/18x18ko.pcf.gz", 18 );
+   gt_loadFont( gt, "../docs/assets/font/9x18.pcf.gz", 18 );
 
    const char *text[] =
    {
