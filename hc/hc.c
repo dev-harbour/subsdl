@@ -48,6 +48,9 @@ int main( void )
          case SDL_WINDOWEVENT_CLOSE:
             return SDL_QUIT;
 
+         case SDLK_RETURN:
+            break;
+
          case SDLK_TAB:
 
             if( aPanel == lPanel )
@@ -57,6 +60,36 @@ int main( void )
             else
             {
                aPanel = lPanel;
+            }
+            break;
+
+         case SDLK_DOWN:
+
+            if( aPanel->rowBar < aPanel->maxRow -3 && aPanel->rowBar <= aPanel->filesCount -2 )
+            {
+               ++aPanel->rowBar;
+            }
+            else
+            {
+               if( aPanel->rowNo + aPanel->rowBar <= aPanel->filesCount -3 )
+               {
+                  ++aPanel->rowNo;
+               }
+            }
+            break;
+
+         case SDLK_UP:
+
+            if( aPanel->rowBar > 0 )
+            {
+               --aPanel->rowBar;
+            }
+            else
+            {
+               if( aPanel->rowNo > 0 )
+               {
+                  --aPanel->rowNo;
+               }
             }
             break;
 
@@ -221,10 +254,25 @@ static void hc_drawPanel( GT *gt, HC *hc )
 
          char *paddedResult = gt_padR( paddedString, hc->maxCol - 2 );
 
-         gt_drawFont( gt, hc->col + 1, row, paddedResult,
-            IIF( aPanel == hc && i == hc->rowBar + hc->rowNo,
-            IIF( hc->files[ i ].state == T, "323232/FF4D4D", "323232/00FF00" ),
-            hc_selectColor( hc->files[ i ].attr, hc->files[ i ].state ) ) );
+         const char *selectedColor;
+
+         if( aPanel == hc && i == hc->rowBar + hc->rowNo )
+         {
+            if( hc->files[ i ].state == T )
+            {
+               selectedColor = "323232/FF4D4D";
+            }
+            else
+            {
+               selectedColor = "323232/00FF00";
+            }
+         }
+         else
+         {
+            selectedColor = hc_selectColor( hc->files[ i ].attr, hc->files[ i ].state );
+         }
+
+         gt_drawFont( gt, hc->col + 1, row, paddedResult, selectedColor );
 
          free( paddedResult );
 
