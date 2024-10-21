@@ -209,12 +209,60 @@ int main( void )
                   }
                   break;
 
+               case SDL_MOUSEWHEEL:
+                  if( event.wheel.y > 0 ) 
+                  {
+                     if( aPanel->rowBar > 0 )
+                     {
+                        --aPanel->rowBar;
+                     }
+                     else if( aPanel->rowNo > 0 )
+                     {
+                        --aPanel->rowNo;
+                     }
+                  }
+                  else if( event.wheel.y < 0 )  // Przewijanie w dół
+                  {
+                     if( aPanel->rowBar < aPanel->maxRow - 3 && aPanel->rowBar <= aPanel->filesCount - 2 )
+                     {
+                        ++aPanel->rowBar;
+                     }
+                     else if( aPanel->rowNo + aPanel->rowBar <= aPanel->filesCount - 2 )
+                     {
+                        ++aPanel->rowNo;
+                     }
+                  }
+                  break;
+
                case SDL_MOUSEBUTTONDOWN:
 
                   switch( event.button.button )
                   {
                      case SDL_BUTTON_LEFT:
-                        if( event.button.clicks == 2 )
+                        if( event.button.clicks == 1 )
+                        {
+                           int mouseX = gt->mouseX / gt->fontCellWidth;
+                           int mouseY = gt->mouseY / gt->fontCellHeight;
+
+                           int rowIndex = mouseY - 1;
+
+                           if( rowIndex >= 0 && rowIndex < gt_maxRow( gt ) )
+                           {
+                              if( mouseX < gt_maxCol( gt ) / 2 )
+                              {
+                                 aPanel = lPanel;
+                              }
+                              else
+                              {
+                                 aPanel = rPanel;
+                              }
+                              if( rowIndex < aPanel->filesCount )
+                              {
+                                 aPanel->rowBar = rowIndex;
+                              }
+                           }
+                        }
+                        else if( event.button.clicks == 2 )
                         {
                            index = aPanel->rowBar + aPanel->rowNo;
                            if( gt_at( "D", aPanel->files[ index ].attr ) == 0 )
