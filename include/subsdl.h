@@ -60,8 +60,10 @@ struct _GT
    SDL_Window   *window;
    SDL_Renderer *renderer;
    SDL_Event     event;
-   int           winWidth;
-   int           winHeight;
+   int           width;
+   int           height;
+   int           mouseX;
+   int           mouseY;
    int           maxCols;
    int           maxRows;
 
