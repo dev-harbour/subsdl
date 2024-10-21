@@ -234,6 +234,23 @@ int main( void )
                   }
                   break;
 
+               case SDL_MOUSEMOTION:
+
+                  int mouseX = gt->mouseX / gt->fontCellWidth;
+                  int mouseY = gt->mouseY / gt->fontCellHeight;
+
+                  if( mouseX >= lPanel->col && mouseX < ( lPanel->col + lPanel->maxCol ) &&
+                      mouseY >= lPanel->row && mouseY < ( lPanel->row + lPanel->maxRow ) )
+                  {
+                     aPanel = lPanel;
+                  }
+                  else if( mouseX >= rPanel->col && mouseX < ( rPanel->col + rPanel->maxCol ) &&
+                           mouseY >= rPanel->row && mouseY < ( rPanel->row + rPanel->maxRow ) )
+                  {
+                     aPanel = rPanel;
+                  }
+                  break;
+
                case SDL_MOUSEBUTTONDOWN:
 
                   switch( event.button.button )
@@ -246,20 +263,23 @@ int main( void )
 
                            int rowIndex = mouseY - 1;
 
-                           if( rowIndex >= 0 && rowIndex < gt_maxRow( gt ) )
+                           // Sprawdzenie, czy mysz jest w obrębie lewego panelu
+                           if( mouseX >= lPanel->col && mouseX < ( lPanel->col + lPanel->maxCol ) &&
+                              mouseY >= lPanel->row && mouseY < ( lPanel->row + lPanel->maxRow ) )
                            {
-                              if( mouseX < gt_maxCol( gt ) / 2 )
-                              {
-                                 aPanel = lPanel;
-                              }
-                              else
-                              {
-                                 aPanel = rPanel;
-                              }
-                              if( rowIndex < aPanel->filesCount )
-                              {
-                                 aPanel->rowBar = rowIndex;
-                              }
+                              aPanel = lPanel;
+                           }
+                           // Sprawdzenie, czy mysz jest w obrębie prawego panelu
+                           else if( mouseX >= rPanel->col && mouseX < ( rPanel->col + rPanel->maxCol ) &&
+                                    mouseY >= rPanel->row && mouseY < ( rPanel->row + rPanel->maxRow ) )
+                           {
+                              aPanel = rPanel;
+                           }
+
+                           // Sprawdzenie, czy rowIndex znajduje się w granicach panelu i aktualizacja wyboru wiersza
+                           if( rowIndex >= 0 && rowIndex < aPanel->filesCount )
+                           {
+                              aPanel->rowBar = rowIndex;
                            }
                         }
                         else if( event.button.clicks == 2 )
