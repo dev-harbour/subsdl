@@ -236,6 +236,12 @@ int main( void )
 
                case SDL_MOUSEMOTION:
 
+                  if( gt->fontCellWidth == 0 || gt->fontCellHeight == 0 )
+                  {
+                     fprintf( stderr, "Error: Font not properly loaded, cell size is zero.\n" );
+                     break;
+                  }
+
                   int mouseX = gt->mouseX / gt->fontCellWidth;
                   int mouseY = gt->mouseY / gt->fontCellHeight;
 
@@ -252,6 +258,12 @@ int main( void )
                   break;
 
                case SDL_MOUSEBUTTONDOWN:
+
+                  if( gt->fontCellWidth == 0 || gt->fontCellHeight == 0 )
+                  {
+                     fprintf( stderr, "Error: Font not properly loaded, cell size is zero.\n" );
+                     break;
+                  }
 
                   switch( event.button.button )
                   {
