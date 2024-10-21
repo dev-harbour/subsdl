@@ -18,8 +18,8 @@ GT *gt_createWindow( int width, int height, const char *title, const char *hexCo
    }
 
    memset( gt, 0, sizeof( GT ) );
-   gt->winWidth   = width;
-   gt->winHeight  = height;
+   gt->width   = width;
+   gt->height  = height;
    gt->background = hexColor;
 
    if( SDL_Init( SDL_INIT_VIDEO ) != 0 )
@@ -110,10 +110,17 @@ void gt_beginDraw( GT *gt )
 {
    int newWidth;
    int newHeight;
+   int newMouseX;
+   int newMouseY;
+
    SDL_GetWindowSize( gt->window, &newWidth, &newHeight );
 
-   gt->winWidth = newWidth;
-   gt->winHeight = newHeight;
+   gt->width = newWidth;
+   gt->height = newHeight;
+
+   SDL_GetMouseState( &newMouseX, &newMouseY );
+   gt->mouseX = newMouseX;
+   gt->mouseY = newMouseY;
 
    SDL_Color bgColor = { 50, 50, 50, 255 };
    if( gt->background && strlen( gt->background ) > 0 )
@@ -443,7 +450,7 @@ int gt_maxCol( GT *gt )
       fprintf( stderr, "Error: fontCellWidth is zero. Make sure the font is loaded correctly.\n" );
       return 0;
    }
-   return gt->winWidth / gt->fontCellWidth;
+   return gt->width / gt->fontCellWidth;
 }
 
 int gt_maxRow( GT *gt )
@@ -453,17 +460,17 @@ int gt_maxRow( GT *gt )
       fprintf( stderr, "Error: fontCellHeight is zero. Make sure the font is loaded correctly.\n" );
       return 0;
    }
-   return gt->winHeight / gt->fontCellHeight;
+   return gt->height / gt->fontCellHeight;
 }
 
 int gt_maxWidth( GT *gt )
 {
-   return gt->winWidth;
+   return gt->width;
 }
 
 int gt_maxHeight( GT *gt )
 {
-   return gt->winHeight;
+   return gt->height;
 }
 
 int gt_fontCellWidth( GT *gt )
