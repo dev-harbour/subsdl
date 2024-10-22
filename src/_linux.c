@@ -212,3 +212,8 @@ bool gt_isExecutable( const char *commandLine )
    pclose( fp );
    return F;
 }
+
+void gt_convertToSystemPath( char *path )
+{
+   UNUSED( path );
+}

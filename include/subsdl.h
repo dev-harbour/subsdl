@@ -140,7 +140,7 @@ const char *gt_pathSeparator( void );
 const char *gt_dirDeleteLastPath( const char *path );
 const char *gt_dirDeleteLastSeparator( const char *path );
 const char *gt_dirLastName( const char *path );
-
+void        gt_convertToSystemPath( char *path );
 /* ------------------------------------------------------------------------- */
 FileInfo   *gt_directory( const char *currentDir, int *size );
 void        gt_freeDirectory( FileInfo *pFiles );

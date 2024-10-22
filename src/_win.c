@@ -193,3 +193,14 @@ bool gt_isExecutable( const char *filePath )
 
    return F;
 }
+
+void gt_convertToSystemPath( char *path )
+{
+   for( int i = 0; path[ i ] != '\0'; i++ )
+   {
+      if( path[ i ] == '/' )
+      {
+         path[ i ] = '\\';
+      }
+   }
+}

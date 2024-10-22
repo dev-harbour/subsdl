@@ -1,5 +1,7 @@
 /*
- * Copyright 2014 - 2024 Rafał Jopek ( rafaljopek at hotmail com )
+ * Harbour Commander (HC) Project
+ * Copyright 2014 - 2024 Rafał Jopek
+ * Website: https://harbour.pl
  *
  * This work has been migrated from my project,
  * which was originally developed in the Harbour language. The code is
@@ -15,6 +17,8 @@ static HC *lPanel = NULL;
 static HC *rPanel = NULL;
 static HC *aPanel = NULL;
 
+static AS as;
+
 int main( void )
 {
    bool quit = F;
@@ -25,6 +29,9 @@ int main( void )
 
    lPanel = hc_init();
    rPanel = hc_init();
+
+   hc_loadSettings( lPanel, "hc.usr" );
+   hc_loadSettings( rPanel, "hc.usr" );
 
    hc_fetchList( lPanel, gt_cwd() );
    hc_fetchList( rPanel, gt_cwd() );
@@ -338,6 +345,9 @@ int main( void )
       gt_endDraw( gt );
    }
 
+   hc_saveSettings( gt, lPanel, "hc.usr" );
+   hc_saveSettings( gt, rPanel, "hc.usr" );
+
    hc_free( lPanel );
    hc_free( rPanel );
    aPanel = NULL;
@@ -363,7 +373,10 @@ static HC *hc_init( void )
    hc->isFirstFile       = F;
    hc->isHiddenFile      = F;
 
-   hc_loadSettings( hc, "hc.usr" );
+   hc->sizeVisible = T;
+   hc->attrVisible = T;
+   hc->dateVisible = T;
+   hc->timeVisible = T;
 
    return hc;
 }
@@ -382,54 +395,90 @@ void hc_loadSettings( HC *hc, const char *configFilePath )
    {
       line[ strcspn( line, "\n" ) ] = 0;
 
-      if( strstr( line, "sizeVisible" ) != NULL )
+      if( strstr( line, "Global-settings:" ) != NULL )
       {
-         if( strstr( line, "T" ) != NULL )
+         aPanel = NULL;
+         continue;
+      }
+      else if( strstr( line, "lPanel:" ) != NULL )
+      {
+         aPanel = lPanel;
+         continue;
+      }
+      else if( strstr( line, "rPanel:" ) != NULL )
+      {
+         aPanel = rPanel;
+         continue;
+      }
+
+      if( aPanel == NULL )
+      {
+         if( strstr( line, "width" ) )
          {
-            hc->sizeVisible = T;
+            sscanf( line, "width = %d", &as.width );
          }
-         else
+         else if( strstr( line, "height" ) )
          {
-            hc->sizeVisible = F;
+            sscanf( line, "height = %d", &as.height );
          }
       }
 
-      if( strstr( line, "attrVisible" ) != NULL )
+      if( aPanel == hc )
       {
-         if( strstr( line, "T" ) != NULL)
+         if( strstr( line, "sizeVisible" ) )
          {
-            hc->attrVisible = T;
+            aPanel->sizeVisible = IIF( ( strstr( line, "T" ) ), T, F );
          }
-         else
+         else if( strstr( line, "attrVisible" ) )
          {
-            hc->attrVisible = F;
+            aPanel->attrVisible = IIF( ( strstr( line, "T" ) ), T, F );
          }
-      }
-
-      if( strstr( line, "dateVisible" ) != NULL )
-      {
-         if( strstr( line, "T" ) != NULL )
+         else if( strstr( line, "dateVisible" ) )
          {
-            hc->dateVisible = T;
+            aPanel->dateVisible = IIF( ( strstr( line, "T" ) ), T, F );
          }
-         else
+         else if( strstr( line, "timeVisible" ) )
          {
-            hc->dateVisible = F;
+            aPanel->timeVisible = IIF( ( strstr( line, "T" ) ), T, F );
          }
-      }
-
-      if( strstr( line, "timeVisible" ) != NULL )
-      {
-         if( strstr( line, "T" ) != NULL)
+         else if( strstr( line, "currentDir" ) )
          {
-            hc->timeVisible = T;
+            sscanf( line, "currentDir = %[^\n]", aPanel->currentDir );
          }
-         else
-         {
-            hc->timeVisible = F;
-         }
+         gt_convertToSystemPath( aPanel->currentDir );
       }
    }
+
+   fclose( file );
+}
+
+void hc_saveSettings( GT *gt, HC *hc, const char *configFilePath )
+{
+   UNUSED( hc );
+   FILE *file = fopen( configFilePath, "w" );
+   if( file == NULL )
+   {
+      fprintf( stderr, "Failed to open config file for saving: %s\n", configFilePath );
+      return;
+   }
+
+   fprintf( file, "Global-settings:\n" );
+   fprintf( file, "width = %d\n", gt->width );
+   fprintf( file, "height = %d\n", gt->height );
+
+   fprintf( file, "\nlPanel:\n" );
+   fprintf( file, "sizeVisible = %s\n", lPanel->sizeVisible ? "T" : "F" );
+   fprintf( file, "attrVisible = %s\n", lPanel->attrVisible ? "T" : "F" );
+   fprintf( file, "dateVisible = %s\n", lPanel->dateVisible ? "T" : "F" );
+   fprintf( file, "timeVisible = %s\n", lPanel->timeVisible ? "T" : "F" );
+   fprintf( file, "currentDir = %s\n", lPanel->currentDir );
+
+   fprintf( file, "\nrPanel:\n" );
+   fprintf( file, "sizeVisible = %s\n", rPanel->sizeVisible ? "T" : "F" );
+   fprintf( file, "attrVisible = %s\n", rPanel->attrVisible ? "T" : "F" );
+   fprintf( file, "dateVisible = %s\n", rPanel->dateVisible ? "T" : "F" );
+   fprintf( file, "timeVisible = %s\n", rPanel->timeVisible ? "T" : "F" );
+   fprintf( file, "currentDir = %s\n", rPanel->currentDir );
 
    fclose( file );
 }
