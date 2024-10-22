@@ -1,8 +1,17 @@
-/*
- *
- */
+Global-settings:
+width = 720
+height = 450
 
+lPanel:
 sizeVisible = T
 attrVisible = T
 dateVisible = T
 timeVisible = T
+currentDir = /home/harbour/Dokumenty/subsdl/hc/
+
+rPanel:
+sizeVisible = T
+attrVisible = T
+dateVisible = T
+timeVisible = T
+currentDir = /home/harbour/Dokumenty/subsdl/hc/
