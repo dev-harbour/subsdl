@@ -7,15 +7,17 @@
 
 #include "subsdl.h"
 
-Uint32 DOUBLE_CLICK_TIME = 500;
-
 typedef struct _HC   HC;
 typedef struct _AS   AS;
 
 struct _AS
 {
-   int width;
-   int height;
+   int  width;
+   int  height;
+   bool saveWindowSize;
+   int  widthPos;
+   int  heightPos;
+   bool saveWindowPosition;
 };
 
 struct _HC
@@ -45,15 +47,11 @@ struct _HC
    bool attrVisible;
    bool dateVisible;
    bool timeVisible;
-
-   // Global-settings:
-   int width;
-   int height;
 };
 
 /* ------------------------------------------------------------------------- */
 static HC         *hc_init( void );
-void               hc_loadSettings( HC *hc, const char *configFilePath );
+void               hc_loadSettings( GT *gt, HC *hc, const char *configFilePath );
 void               hc_saveSettings( GT *gt, HC *hc, const char *configFilePath );
 static void        hc_free( HC *hc );
 static void        hc_fetchList( HC *hc, const char *currentDir );

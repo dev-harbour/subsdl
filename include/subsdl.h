@@ -62,6 +62,8 @@ struct _GT
    SDL_Event     event;
    int           width;
    int           height;
+   int           widthPos;
+   int           heightPos;
    int           mouseX;
    int           mouseY;
    int           maxCols;

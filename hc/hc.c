@@ -30,8 +30,8 @@ int main( void )
    lPanel = hc_init();
    rPanel = hc_init();
 
-   hc_loadSettings( lPanel, "hc.usr" );
-   hc_loadSettings( rPanel, "hc.usr" );
+   hc_loadSettings( gt, lPanel, "hc.usr" );
+   hc_loadSettings( gt, rPanel, "hc.usr" );
 
    hc_fetchList( lPanel, gt_cwd() );
    hc_fetchList( rPanel, gt_cwd() );
@@ -381,7 +381,7 @@ static HC *hc_init( void )
    return hc;
 }
 
-void hc_loadSettings( HC *hc, const char *configFilePath )
+void hc_loadSettings( GT *gt, HC *hc, const char *configFilePath )
 {
    FILE *file = fopen( configFilePath, "r" );
    if( file == NULL )
@@ -420,6 +420,33 @@ void hc_loadSettings( HC *hc, const char *configFilePath )
          else if( strstr( line, "height" ) )
          {
             sscanf( line, "height = %d", &as.height );
+         }
+         else if( strstr( line, "saveWindowSize" ) )
+         {
+            as.saveWindowSize = IIF( ( strstr( line, "T" ) ), T, F  );
+         }
+         // ---
+         if( strstr( line, "widthPos" ) )
+         {
+            sscanf( line, "widthPos = %d", &as.widthPos );
+         }
+         else if( strstr( line, "heightPos" ) )
+         {
+            sscanf( line, "heightPos = %d", &as.heightPos );
+         }
+         else if( strstr( line, "saveWindowPosition" ) )
+         {
+            as.saveWindowPosition = IIF( ( strstr( line, "T" ) ), T, F  );
+         }
+         // ---
+         if( as.saveWindowSize )
+         {
+            SDL_SetWindowSize( gt->window, as.width, as.height );
+         }
+         // ---
+         if( as.saveWindowPosition )
+         {
+            SDL_SetWindowPosition( gt->window, as.widthPos, as.heightPos );
          }
       }
 
@@ -465,6 +492,11 @@ void hc_saveSettings( GT *gt, HC *hc, const char *configFilePath )
    fprintf( file, "Global-settings:\n" );
    fprintf( file, "width = %d\n", gt->width );
    fprintf( file, "height = %d\n", gt->height );
+   fprintf( file, "saveWindowSize = %s\n", IIF( as.saveWindowSize, "T", "F" ) );
+   fprintf( file, "widthPos = %d\n", gt->widthPos );
+   fprintf( file, "heightPos = %d\n", gt->heightPos );
+   fprintf( file, "saveWindowPosition = %s\n", IIF( as.saveWindowPosition, "T", "F" ) );
+
 
    fprintf( file, "\nlPanel:\n" );
    fprintf( file, "sizeVisible = %s\n", lPanel->sizeVisible ? "T" : "F" );

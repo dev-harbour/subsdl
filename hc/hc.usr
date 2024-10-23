@@ -1,17 +1,21 @@
 Global-settings:
 width = 720
 height = 450
+saveWindowSize = T
+widthPos = 300
+heightPos = 300
+saveWindowPosition = T
 
 lPanel:
 sizeVisible = T
 attrVisible = T
 dateVisible = T
 timeVisible = T
-currentDir = /home/harbour/Dokumenty/subsdl/hc/
+currentDir =
 
 rPanel:
 sizeVisible = T
 attrVisible = T
 dateVisible = T
 timeVisible = T
-currentDir = /home/harbour/Dokumenty/subsdl/hc/
+currentDir = 

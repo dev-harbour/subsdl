@@ -18,8 +18,8 @@ GT *gt_createWindow( int width, int height, const char *title, const char *hexCo
    }
 
    memset( gt, 0, sizeof( GT ) );
-   gt->width   = width;
-   gt->height  = height;
+   gt->width = width;
+   gt->height = height;
    gt->background = hexColor;
 
    if( SDL_Init( SDL_INIT_VIDEO ) != 0 )
@@ -37,7 +37,7 @@ GT *gt_createWindow( int width, int height, const char *title, const char *hexCo
       return NULL;
    }
 
-   gt->window = SDL_CreateWindow( title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
+   gt->window = SDL_CreateWindow( title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
    if( !gt->window )
    {
       fprintf( stderr, "Could not create window: %s\n", SDL_GetError() );
@@ -110,13 +110,18 @@ void gt_beginDraw( GT *gt )
 {
    int newWidth;
    int newHeight;
+   int newWidthPos;
+   int newHeightPos;
    int newMouseX;
    int newMouseY;
 
    SDL_GetWindowSize( gt->window, &newWidth, &newHeight );
-
    gt->width = newWidth;
    gt->height = newHeight;
+
+   SDL_GetWindowPosition( gt->window, &newWidthPos, &newHeightPos );
+   gt->widthPos = newWidthPos;
+   gt->heightPos = newHeightPos;
 
    SDL_GetMouseState( &newMouseX, &newMouseY );
    gt->mouseX = newMouseX;
