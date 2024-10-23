@@ -91,4 +91,5 @@ int main( int argc, char *argv[] )
    }
 
    gt_clearAll( gt );
+   return 0;
 }

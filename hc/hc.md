@@ -13,6 +13,14 @@ File manager [hc.c](hc.c)
 - First, build a library [subsdl](../docs/README.md)
 
 - MSYS2
+   ```
+   cd hc/
+   make
+   ```
+   or:
+   ```
+   gcc hc.c -o hc -I ../include -L ../lib -lmingw32 -lsubsdl -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image -lm
+
 - Linux
    ```
    cd hc/

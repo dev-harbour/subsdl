@@ -30,7 +30,7 @@ Before installing the packages, make sure you're running the MinGW 64-bit shell.
    ```
    or single build:
    ```
-   gcc window.c -o window -I ../include -L ../lib -lsubsdl -lSDL2 -lSDL2_ttf -lSDL2_image -lm
+   gcc window.c -o window -I ../include -L ../lib -lmingw32 -lsubsdl -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image -lm
    ```
 ## Installing on Linux
 
