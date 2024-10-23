@@ -4,8 +4,11 @@
 
 #include "subsdl.h"
 
-int main()
+int main( int argc, char *argv[] )
 {
+   UNUSED( argc );
+   UNUSED( argv );
+
    bool quit = F;
    GT *gt = gt_createWindow( 830, 450, "Test Image 8x8", "323232" );
 
