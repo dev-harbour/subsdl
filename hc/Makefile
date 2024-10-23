@@ -14,7 +14,7 @@ else ifeq ($(UNAME_S),Darwin)
     LIBS = -L../$(DESTDIR) -lsubsdl -lSDL2 -lSDL2_ttf -lSDL2_image -lm
 else
     EXECUTABLES = $(EXAMPLES:.c=.exe)
-    LIBS = -L../$(DESTDIR) -lsubsdl -lSDL2 -lSDL2_ttf -lSDL2_image -lm
+    LIBS = -L../$(DESTDIR) -lmingw32 -lsubsdl -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image -lm
 endif
 
 .PHONY: all clean run FORCE

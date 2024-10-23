@@ -15,6 +15,19 @@ const char *gt_pathSeparator( void )
    return "\\";
 }
 
+struct tm ConvertSystemTimeToTm( const SYSTEMTIME *st )
+{
+   struct tm tm;
+   memset( &tm, 0, sizeof( tm ) );
+   tm.tm_year = st->wYear - 1900; // Years since 1900
+   tm.tm_mon  = st->wMonth - 1;   // The months are from 0 to 11
+   tm.tm_mday = st->wDay;
+   tm.tm_hour = st->wHour;
+   tm.tm_min  = st->wMinute;
+   tm.tm_sec  = st->wSecond;
+   return tm;
+}
+
 FileInfo *gt_directory( const char *currentDir, int *size )
 {
    FileInfo *files = NULL;
@@ -182,7 +195,7 @@ bool gt_isExecutable( const char *filePath )
 
    if( ext != NULL )
    {
-      for( int i = 0; i < sizeof( extensions ) / sizeof( extensions[0] ); i++ )
+      for( size_t i = 0; i < sizeof( extensions) / sizeof( extensions[ 0 ] ); i++ )
       {
          if( strcmp( ext, extensions[i] ) == 0 )
          {

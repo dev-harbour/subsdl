@@ -19,8 +19,11 @@ static HC *aPanel = NULL;
 
 static AS as;
 
-int main( void )
+int main( int argc, char *argv[] )
 {
+   UNUSED( argc );
+   UNUSED( argv );
+   
    bool quit = F;
    int index;
    GT *gt = gt_createWindow( 720, 450, "Harbour Commander", "F1F1F1" );
@@ -353,6 +356,8 @@ int main( void )
    aPanel = NULL;
 
    gt_clearAll( gt );
+
+   return 0;
 }
 
 static HC *hc_init( void )
@@ -813,6 +818,12 @@ static const char *hc_paddedString( HC *hc, int longestName, int longestSize, in
       const char *rBracket = "]";
 
       char *padLSizeAttrDateTime = gt_padL( sizeAttrDateTime, hc->maxCol - border - parentDir );
+
+      size_t max_len = sizeof( formattedLine ) - strlen( lBracket ) - strlen( name ) - strlen( rBracket ) - 1;
+      if( strlen( padLSizeAttrDateTime ) > max_len )
+      {
+         padLSizeAttrDateTime[ max_len ] = '\0';
+      }
       snprintf( formattedLine, sizeof( formattedLine ), "%s%s%s%s", lBracket, name, rBracket, padLSizeAttrDateTime );
 
       free( padLSizeAttrDateTime );
