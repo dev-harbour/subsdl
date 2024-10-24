@@ -26,6 +26,9 @@ int main( int argc, char *argv[] )
 
    bool quit = F;
    int index;
+   Uint32 lastResizeTime = 0;
+   int windowResized = 0;
+
    GT *gt = gt_createWindow( 800, 450, "Harbour Commander", "F1F1F1" );
 
    gt_loadFont( gt, "../docs/assets/font/9x18.pcf.gz", 18 );
@@ -58,6 +61,11 @@ int main( int argc, char *argv[] )
                   if( event.window.event == SDL_WINDOWEVENT_CLOSE )
                   {
                      quit = T;
+                  }
+                  if( event.window.event == SDL_WINDOWEVENT_RESIZED )
+                  {
+                     windowResized = 1;
+                     lastResizeTime = SDL_GetTicks();
                   }
                   break;
 
@@ -337,6 +345,26 @@ int main( int argc, char *argv[] )
             }
          }
          while( SDL_PollEvent( &event ) );
+
+         // Wyrównywanie współrzędnych okna
+         if( windowResized && SDL_GetTicks() - lastResizeTime > 200 )
+         {
+            int maxCol = gt_maxCol( gt );
+            int maxRow = gt_maxRow( gt );
+
+            int panelWidth = ( lPanel->maxCol + rPanel->maxCol ) * gt->fontCellWidth;
+
+            int newWidth = maxCol * gt->fontCellWidth;
+            int newHeight = maxRow * gt->fontCellHeight;
+
+            if( newWidth != panelWidth )
+            {
+               newWidth = panelWidth;
+            }
+
+            SDL_SetWindowSize( gt->window, newWidth, newHeight );
+            windowResized = 0;
+         }
       }
       gt_beginDraw( gt );
 
