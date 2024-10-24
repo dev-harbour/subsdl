@@ -23,10 +23,10 @@ int main( int argc, char *argv[] )
 {
    UNUSED( argc );
    UNUSED( argv );
-   
+
    bool quit = F;
    int index;
-   GT *gt = gt_createWindow( 720, 450, "Harbour Commander", "F1F1F1" );
+   GT *gt = gt_createWindow( 800, 450, "Harbour Commander", "F1F1F1" );
 
    gt_loadFont( gt, "../docs/assets/font/9x18.pcf.gz", 18 );
 

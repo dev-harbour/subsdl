@@ -1,5 +1,5 @@
 Global-settings:
-width = 720
+width = 800
 height = 450
 saveWindowSize = T
 widthPos = 300
@@ -18,4 +18,4 @@ sizeVisible = T
 attrVisible = T
 dateVisible = T
 timeVisible = T
-currentDir = 
+currentDir =
