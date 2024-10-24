@@ -6,8 +6,8 @@ The `subsystem SDL` serves as a GT driver that utilizes **SDL2** for handling in
 
 For more info see [getting started](docs/README.md).
 
-### Example
+### Example apps included in this project
 
-File manager [hc.c](hc/hc.c)
+File manager [hc.c](hc/hc.c). For more info see [hc.md](hc/hc.md)
 
 ![Main](docs/assets/img/hc.png)
