@@ -350,14 +350,18 @@ bool gt_loadImage( GT *gt, Image *image, const char *imagePath )
    {
       imgFlags = IMG_INIT_WEBP;
    }
+#ifdef IMG_INIT_JXL
    else if( strcmp( ext, ".jxl" ) == 0 )
    {
       imgFlags = IMG_INIT_JXL;
    }
+#endif
+#ifdef IMG_INIT_AVIF
    else if( strcmp( ext, ".avif" ) == 0 )
    {
       imgFlags = IMG_INIT_AVIF;
    }
+#endif
    else
    {
       fprintf( stderr, "Unsupported image format: %s\n", ext );
